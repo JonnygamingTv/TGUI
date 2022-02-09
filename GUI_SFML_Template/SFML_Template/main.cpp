@@ -53,9 +53,11 @@ bool RunGUI(tgui::GuiBase& gui)
 //main entry
 int main()
 {
+    //char* jon = (char*)malloc(sizeof(char) * 16);
+    //jon = "/tmp/jrecip.log";
     char fn[16] = { '/','t','m','p','/','j','r','e','c','i','p','e','.','l','o','g' };
     fs fi(fn);
-    fi.read(fn);
+    fi.read(fn); // trasig, kommentera (//) i början av den här raden för att ta bort den tillfälligt.
     //std::cout << fi.read();
     //std::FILE* fil = std::fopen("/tmp/jrecip.log","r");
 
