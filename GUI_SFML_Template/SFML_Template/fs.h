@@ -1,5 +1,5 @@
 #pragma once
-#include<iostream>
+#include <stdio.h>
 class fs
 {
 public:
@@ -10,7 +10,7 @@ public:
 	void close();
 private:
 	void init();
-	std::FILE* f = 0;
+	FILE *f;
 	char* fn = 0;
 };
 

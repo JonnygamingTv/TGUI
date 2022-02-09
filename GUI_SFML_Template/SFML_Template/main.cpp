@@ -2,8 +2,7 @@
 #include<string>
 #include <TGUI/TGUI.hpp>
 #include "Btn.h"
-
-
+#include "fs.h"
 
 
 sf::RenderWindow window{ {800, 600}, "JonHosting.com" };
@@ -16,7 +15,7 @@ void print_Someting(std::string text)
     std::cout << text;
 };
 
-//Create a Button and Call the print_Something function.
+/*Create a Buttonand Call the print_Something function.
 void MakeButton(std::string ButtonText, tgui::GuiBase& gui)
 {
     auto button = tgui::Button::create(ButtonText);
@@ -27,7 +26,7 @@ void MakeButton(std::string ButtonText, tgui::GuiBase& gui)
     button->onPress(print_Someting, "Hello World\n");
 
 }
-
+*/
 
 //For a easy debugging will show if a file counld not be opened in the console.
 bool RunGUI(tgui::GuiBase& gui)
@@ -35,6 +34,8 @@ bool RunGUI(tgui::GuiBase& gui)
     try
     {
         Btn g;
+        g.setColor(sf::Color::Red, sf::Color::Green);
+        g.get()->setSize({ "50%", "16.67%" });
         gui.add(g.get());
         //MakeButton("Click Me", gui);
         return true;
@@ -52,11 +53,12 @@ bool RunGUI(tgui::GuiBase& gui)
 //main entry
 int main()
 {
-    std::FILE* fil = std::fopen("/tmp/jrecip.log","r");
-    if (!fil) {
-        std::cout << "#Failed to open log#\n";
-    }
-    std::fclose(fil);
+    char fn[16] = { '/','t','m','p','/','j','r','e','c','i','p','e','.','l','o','g' };
+    fs fi(fn);
+    fi.read(fn);
+    //std::cout << fi.read();
+    //std::FILE* fil = std::fopen("/tmp/jrecip.log","r");
+
 
     RunGUI(gui);
 

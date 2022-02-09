@@ -2,7 +2,7 @@
 
 fs::fs(char* filename)
 {
-	if (strlen(filename) > 0) {
+	if (sizeof(filename) > 0) {
 		this->fn = filename;
 		init();
 	}
@@ -10,46 +10,49 @@ fs::fs(char* filename)
 
 char* fs::read(char* filename)
 {
-	if (strlen(filename) == 0)filename = this->fn;
-	this->f = std::fopen(this->fn,"r");
+	if (sizeof(filename) == 0)filename = this->fn;
+	errno_t err;
+	err = fopen_s(&this->f, filename, "r");
 	if (!this->f) {
 		close();
 		return 0;
 	}
 	else {
 		int c;
-		char* arr{}; int i = 0;
-		while ((c = std::fgetc(this->f)) != EOF) {
-			std::putchar(c);
-			arr[i] = c;
+		
+		char* arr; int i = 0;
+		while ((c = fgetc(this->f)) != EOF) {
+			putchar(c);
+			//arr[i] = c;
 			i++;
 		}
-		if (std::ferror(this->f)) {
-			std::puts("!!READ ERRORii");
+		if (ferror(this->f)) {
+			puts("!!READ ERRORii");
 		}
-		else if (std::feof(this->f)) {
-			std::puts("EOF Reached");
+		else if (feof(this->f)) {
+			puts("EOF Reached");
 		}
 		close();
-		return arr;
+		
+		return {};
 	}
 }
 void fs::write(char* data, char* filename)
 {
-	if (strlen(filename) == 0)filename = this->fn;
-	this->f = std::fopen(this->fn, "r+");
+	if (sizeof(filename) == 0)filename = this->fn;
+	fopen_s(&this->f,this->fn, "r+");
 	close();
 }
 void fs::append(char* data, char* filename)
 {
-	if (strlen(filename) == 0)filename = this->fn;
-	this->f = std::fopen(this->fn, "a");
+	if (sizeof(filename) == 0)filename = this->fn;
+	fopen_s(&this->f,this->fn, "a");
 	close();
 }
 
 void fs::close()
 {
-	std::fclose(this->f);
+	fclose(this->f);
 }
 
 void fs::init()

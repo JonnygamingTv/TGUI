@@ -132,12 +132,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Btn.cpp" />
+    <ClCompile Include="fs.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LoginMenu.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Btn.h" />
+    <ClInclude Include="fs.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="LoginMenu.h" />
   </ItemGroup>

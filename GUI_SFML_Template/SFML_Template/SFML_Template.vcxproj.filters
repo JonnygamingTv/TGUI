@@ -27,6 +27,9 @@
     <ClCompile Include="Input.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="fs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Btn.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
