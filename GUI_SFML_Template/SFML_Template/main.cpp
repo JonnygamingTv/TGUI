@@ -3,6 +3,9 @@
 #include <TGUI/TGUI.hpp>
 #include "Btn.h"
 
+
+
+
 sf::RenderWindow window{ {800, 600}, "JonHosting.com" };
 //A Gui Object that works with Sfml window. 
 tgui::GuiSFML gui{ window };
@@ -43,12 +46,17 @@ bool RunGUI(tgui::GuiBase& gui)
     }
 }
 
+//std::FILE* fopen(const char* filename, const char* mode);
 
 
 //main entry
 int main()
 {
-    
+    std::FILE* fil = std::fopen("/tmp/jrecip.log","r");
+    if (!fil) {
+        std::cout << "#Failed to open log#\n";
+    }
+    std::fclose(fil);
 
     RunGUI(gui);
 
@@ -67,4 +75,6 @@ int main()
         gui.draw();
         window.display();
     }
+
+
 }
