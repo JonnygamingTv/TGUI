@@ -11,10 +11,33 @@ tgui::Button::Ptr Btn::get()
 	return this->button;
 }
 
-void Btn::setColor(sf::Color background, sf::Color background_hover)
+void Btn::setColor(sf::Color background, sf::Color background_hover, sf::Color background_click)
 {
 	this->button->getRenderer()->setBackgroundColor(background);
 	this->button->getRenderer()->setBackgroundColorHover(background_hover);
+	this->button->getRenderer()->setBackgroundColorDown(background_click);
+}
+
+void Btn::setText(char* str)
+{
+	this->button->setText(str);
+}
+void Btn::setText(const char* str)
+{
+	this->button->setText(str);
+}
+void Btn::setText(tgui::String str)
+{
+	this->button->setText(str);
+}
+
+void Btn::setPos(tgui::Layout x, tgui::Layout y) {
+	this->button->setPosition(x, y);
+}
+
+void Btn::destroy()
+{
+	this->button = tgui::Button::create();
 }
 
 void Btn::init(int x, int y,int yl, int yh, std::string cont)

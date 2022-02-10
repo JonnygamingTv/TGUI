@@ -8,12 +8,13 @@
 sf::RenderWindow window{ {800, 600}, "JonHosting.com" };
 //A Gui Object that works with Sfml window. 
 tgui::GuiSFML gui{ window };
+tgui::String languages[2][12] = { {"Local","Cloud"},{"Lokal","Målnet"} };
 
-//Print Something on the Concole
+/*Print Something on the Concole
 void print_Someting(std::string text)
 {
     std::cout << text;
-};
+};*/
 
 /*Create a Buttonand Call the print_Something function.
 void MakeButton(std::string ButtonText, tgui::GuiBase& gui)
@@ -27,16 +28,50 @@ void MakeButton(std::string ButtonText, tgui::GuiBase& gui)
 
 }
 */
-
+Btn btnPage[6];// list of buttons to be used
+int currentPage = -1; int Lang = 0;
+void pickLang(int L);
 //For a easy debugging will show if a file counld not be opened in the console.
-bool RunGUI(tgui::GuiBase& gui)
+bool RunGUI(tgui::GuiBase& gui, int p = 0)
 {
     try
     {
-        Btn g;
-        g.setColor(sf::Color::Red, sf::Color::Green);
-        g.get()->setSize({ "50%", "16.67%" });
-        gui.add(g.get());
+        if (currentPage != p) {
+            for (int i = 0; i < 6; i++) {
+                gui.remove(btnPage->get());
+                btnPage[i].destroy();
+            }
+            std::cout << "P: " << p << "\n";
+        }
+        switch (p) {
+        case 2:
+
+            break;
+        case 1:
+            btnPage[0].setColor(sf::Color::Red, sf::Color::Green);
+            btnPage[0].setText(languages[Lang][0]);
+            btnPage[0].get()->setSize({ "50%", "16.67%" });
+            for (int i = 0; i < 1; i++)gui.add(btnPage[i].get());
+            break;
+        default:
+            //Btn g;
+            btnPage[0].setColor(sf::Color::Red, sf::Color::Green);
+            btnPage[0].setText("Svenska");
+            btnPage[0].get()->setSize({ "50%", "16.67%" });
+            btnPage[0].get()->setPosition({ "0%", "16.67%" });
+            btnPage[0].get()->onClick(pickLang, 1);
+            btnPage[1].setColor(sf::Color::Red, sf::Color::Green);
+            btnPage[1].setText("English");
+            btnPage[1].get()->setSize({ "50%", "16.67%" });
+            btnPage[1].get()->setPosition({ "50%", "16.67%" });
+            btnPage[1].get()->onClick(pickLang, 0);
+            for (int i = 0; i < 2; i++)gui.add(btnPage[i].get());
+            break;
+        }
+        currentPage = p;
+        //window.clear();
+        //gui.draw();
+        //window.display();
         //MakeButton("Click Me", gui);
         return true;
     }
@@ -61,7 +96,6 @@ int main()
     //std::cout << fi.read();
     //std::FILE* fil = std::fopen("/tmp/jrecip.log","r");
 
-
     RunGUI(gui);
 
     while (window.isOpen())
@@ -82,3 +116,4 @@ int main()
 
 
 }
+void pickLang(int L) { std::cout << L << "\n"; Lang = L; RunGUI(gui, 1); }
