@@ -31,6 +31,10 @@ void Btn::setText(const char* str)
 {
 	this->button->setText(str);
 }
+void Btn::setTextSize(int s)
+{
+	this->button->setTextSize(s);
+}
 void Btn::setText(tgui::String str)
 {
 	this->button->setText(str);

@@ -9,6 +9,7 @@ public:
 	void setTextColor(sf::Color color);
 	void setText(char* str);
 	void setText(const char* str);
+	void setTextSize(int s);
 	void setText(tgui::String str);
 	void setPos(tgui::Layout x, tgui::Layout y);
 	void destroy();

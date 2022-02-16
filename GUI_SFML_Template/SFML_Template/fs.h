@@ -6,6 +6,8 @@ public:
 	fs(char* filename = {});
 	char* read(char* filename = {});
 	//char* read(const char* filename = {});
+	bool exists(char* filename = {});
+	void mkdir(char* filename = {});
 	void write(char* data,char* filename = {});
 	void write(const char* data, char* filename = {});
 	void append(char* data,char* filename = {});

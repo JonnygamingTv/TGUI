@@ -19,12 +19,16 @@ char* fs::read(char* filename)
 	else {
 		int c;
 		int i = 0;
-		char* arr={};
+		fseek(this->f, 0L, SEEK_END);
+		const int size = ftell(this->f) +1;
+		rewind(this->f);
+		char* arr = new char[size];
 		while ((c = fgetc(this->f)) != EOF) {
 			putchar(c);
 			arr[i] = c;
 			i++;
 		}
+		//for (int i = 0; i < size; i++)arr[i] = fgetc(this->f);
 		if (ferror(this->f)) {
 			puts("!!READ ERRORii");
 		}
@@ -32,23 +36,47 @@ char* fs::read(char* filename)
 			puts("EOF Reached");
 		}
 		close();
-		
 		return arr;
 	}
 	return {};
 }
 
 
+bool fs::exists(char* filename)
+{
+	if (sizeof(filename) == 0)filename = this->fn;
+	
+	return false;
+}
+
+void fs::mkdir(char* filename)
+{
+	
+}
+
 void fs::write(char* data, char* filename)
 {
 	if (sizeof(filename) == 0)filename = this->fn;
-	fopen_s(&this->f,this->fn, "r+");
+	errno_t err = 1;
+	err = fopen_s(&this->f,this->fn, "w");
+	if (err == 0) { // no error
+		fputs(data, this->f);
+		close();
+	}
+	else {
+
+	}
 	close();
 }
 void fs::append(char* data, char* filename)
 {
 	if (sizeof(filename) == 0)filename = this->fn;
-	fopen_s(&this->f,this->fn, "a");
+	errno_t err = 1;
+	err = fopen_s(&this->f,this->fn, "a");
+	if (err == 0) {
+		fputs(data, this->f);
+		close();
+	}
 	close();
 }
 
