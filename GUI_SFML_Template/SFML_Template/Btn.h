@@ -6,6 +6,7 @@ public:
 	Btn(int x = 0,int y=0,int yLength=50,int yHeight=10, std::string cont="JonHosting");
 	tgui::Button::Ptr get();
 	void setColor(sf::Color background,sf::Color background_hover, sf::Color background_click = sf::Color::Transparent);
+	void setTextColor(sf::Color color);
 	void setText(char* str);
 	void setText(const char* str);
 	void setText(tgui::String str);

@@ -18,6 +18,11 @@ void Btn::setColor(sf::Color background, sf::Color background_hover, sf::Color b
 	this->button->getRenderer()->setBackgroundColorDown(background_click);
 }
 
+void Btn::setTextColor(sf::Color color)
+{
+	this->button->getRenderer()->setTextColor(color);
+}
+
 void Btn::setText(char* str)
 {
 	this->button->setText(str);
