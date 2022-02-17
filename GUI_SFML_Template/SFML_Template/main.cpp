@@ -12,17 +12,17 @@ tgui::GuiSFML gui{ window };
 tgui::String languages[2][12] = { {"Back","Local","Cloud","Login","Username","Password"},{"Tillbaks","Lokal","Online","Logga in","Namn","Nyckel"}};
 tgui::String uname; // username identifier
 
-Btn btnPage[12];// list of buttons to be used
+Btn btnPage[6];// list of buttons to be used
 Input inputPage[2]; // list of input areas to be allowed to be used
 int currentPage = -1; int Lang = 0;
-void pickLang(int L); void goMain(); void whatLogin(int p); void saver(); bool handleLogin(int which);
+void pickLang(int L); void goMain(); void whatLogin(int p); void saver(); bool handleLogin(int which); void checkLogin();
 //For easy debugging, show if a file could not be opened in the console.
 bool RunGUI(tgui::GuiBase& gui, int p = 0)
 {
     try
     {
         if (currentPage != p) {
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < 6; i++) {
                 //gui.remove(btnPage[i].get());
                 //btnPage[i].destroy();
                 btnPage[i].get()->setVisible(false);
@@ -46,14 +46,8 @@ bool RunGUI(tgui::GuiBase& gui, int p = 0)
             btnPage[5].get()->setVisible(true);
 
             //std::ifstream psinput("password.txt");
-            bool psinput = false;
-            if (psinput) {
-                btnPage[5].get()->getRenderer()->setBackgroundColorHover({ 0, 0, 255, 175 });
-            }
-            else {
-                btnPage[5].get()->getRenderer()->setBackgroundColorHover({ 255, 0, 0, 175 });
-            }
-            for (int i = 0; i < 2; i++)inputPage[i].get()->setVisible(true);
+            
+            inputPage[0].get()->setVisible(true);
             break; }
         case 2: // cloud login page
             btnPage[0].get()->setVisible(true);
@@ -65,7 +59,7 @@ bool RunGUI(tgui::GuiBase& gui, int p = 0)
         case 1: // pick login page
             btnPage[0].get()->setVisible(true);
 
-            for (int i = 2; i < 5; i++)btnPage[i].get()->setVisible(true);
+            for (int i = 3; i < 5; i++)btnPage[i].get()->setVisible(true);
             break;
         default: // language page
             //Btn g;
@@ -130,6 +124,7 @@ int main()
     btnPage[5].setTextSize(21);
     btnPage[5].get()->setPosition({ "25%", "70%" });
     btnPage[5].get()->onPress(handleLogin, 1);
+    btnPage[5].get()->onMouseEnter(checkLogin);
 
     inputPage[0].get()->setSize("50%", "10%"); // uname
     inputPage[0].setTextSize(18);
@@ -138,7 +133,7 @@ int main()
     inputPage[1].get()->setSize("50%", "10%"); // password
     inputPage[1].setTextSize(18);
     inputPage[1].get()->setPosition({ "25%", "40%" });
-    for(int i=0;i<12;i++)gui.add(btnPage[i].get());
+    for(int i=0;i<6;i++)gui.add(btnPage[i].get());
     gui.add(inputPage[0].get());
     gui.add(inputPage[1].get());
     //char* jon = (char*)malloc(sizeof(char) * 16);
@@ -182,6 +177,19 @@ void pickLang(int L) {
 void goMain() { RunGUI(gui,0); }
 void whatLogin(int p) { if (p == 0) { RunGUI(gui, 3); } else { RunGUI(gui, 2); } }
 void saver(){}
+void checkLogin() {
+    uname = inputPage[0].get()->getText();
+    std::string nam = uname.toStdString() + ".txt";
+    const char* name = nam.c_str();
+    fs logfil;
+    bool psinput = logfil.exists(name);
+    if (psinput) {
+        btnPage[5].get()->getRenderer()->setBackgroundColorHover({ 0, 0, 255, 175 });
+    }
+    else {
+        btnPage[5].get()->getRenderer()->setBackgroundColorHover({ 255, 0, 0, 175 });
+    }
+}
 bool handleLogin(int which){
     uname = inputPage[0].get()->getText();
     std::cout << "Logging in as: " << uname << "\n";

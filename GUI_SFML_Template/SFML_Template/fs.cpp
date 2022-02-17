@@ -45,7 +45,21 @@ char* fs::read(char* filename)
 bool fs::exists(char* filename)
 {
 	if (sizeof(filename) == 0)filename = this->fn;
-	
+	FILE* file;
+	if ((fopen_s(&file, filename, "r")) == 0) {
+		fclose(file);
+		return true;
+	}
+	return false;
+}
+bool fs::exists(const char* filename)
+{
+	if (sizeof(filename) == 0)filename = this->fn;
+	FILE* file;
+	if ((fopen_s(&file,filename, "r")) == 0) {
+		fclose(file);
+		return true;
+	}
 	return false;
 }
 
