@@ -9,10 +9,10 @@
 sf::RenderWindow window{ {800, 600}, "JonHosting.com" };
 //A Gui Object that works with Sfml window. 
 tgui::GuiSFML gui{ window };
-tgui::String languages[2][12] = { {"Back","Local","Cloud","Login","Username","Password"},{"Tillbaks","Lokal","Online","Logga in","Namn","Nyckel"}};
+tgui::String languages[2][12] = { {"Back","Local","Cloud","Login","Username","Password","Create New","Edit"},{"Tillbaks","Lokal","Online","Logga in","Namn","Nyckel","Skapa Ny","Redigera"}};
 tgui::String uname; // username identifier
 
-Btn btnPage[6];// list of buttons to be used
+Btn btnPage[8];// list of buttons to be used
 Input inputPage[2]; // list of input areas to be allowed to be used
 int currentPage = -1; int Lang = 0;
 void pickLang(int L); void goMain(); void whatLogin(int p); void saver(); bool handleLogin(int which); void checkLogin();
@@ -22,7 +22,7 @@ bool RunGUI(tgui::GuiBase& gui, int p = 0)
     try
     {
         if (currentPage != p) {
-            for (int i = 0; i < 6; i++) {
+            for (int i = 1; i < 8; i++) {
                 //gui.remove(btnPage[i].get());
                 //btnPage[i].destroy();
                 btnPage[i].get()->setVisible(false);
@@ -33,17 +33,22 @@ bool RunGUI(tgui::GuiBase& gui, int p = 0)
             std::cout << "P: " << p << "\n";
         }
         switch (p) {
-        case 5: // editor
+        case 6: // editor
 
 
             break;
-        case 4: // list page to pick one to edit
-
+        case 5: // viewer
+            btnPage[7].get()->setVisible(true);
 
             break;
+        case 4: {// list page to pick one to edit
+            btnPage[6].get()->setVisible(true);
+
+            break; }
         case 3: { // local login page
             btnPage[0].get()->setVisible(true);
             btnPage[5].get()->setVisible(true);
+            btnPage[5].get()->onPress(handleLogin, 0);
 
             //std::ifstream psinput("password.txt");
             
@@ -52,7 +57,7 @@ bool RunGUI(tgui::GuiBase& gui, int p = 0)
         case 2: // cloud login page
             btnPage[0].get()->setVisible(true);
             btnPage[5].get()->setVisible(true);
-            
+            btnPage[5].get()->onPress(handleLogin, 1);
 
             for (int i = 0; i < 2; i++) inputPage[i].get()->setVisible(true);
             break;
@@ -63,6 +68,7 @@ bool RunGUI(tgui::GuiBase& gui, int p = 0)
             break;
         default: // language page
             //Btn g;
+            btnPage[0].get()->setVisible(false);
             for (int i = 1; i < 3; i++)btnPage[i].get()->setVisible(true);
             break;
         }
@@ -123,8 +129,19 @@ int main()
     btnPage[5].get()->setSize({ "50%", "16.67%" }); // Login action button
     btnPage[5].setTextSize(21);
     btnPage[5].get()->setPosition({ "25%", "70%" });
-    btnPage[5].get()->onPress(handleLogin, 1);
     btnPage[5].get()->onMouseEnter(checkLogin);
+
+    btnPage[6].get()->setSize({ "15%", "10%" }); // Create New -button
+    btnPage[6].get()->setPosition({ "85%", "0%" });
+    btnPage[6].setColor(sf::Color::Blue, sf::Color::Green);
+    btnPage[6].setTextColor(sf::Color::White);
+    btnPage[6].setTextSize(21);
+
+    btnPage[7].get()->setSize({ "15%", "10%" }); // Edit -button
+    btnPage[7].get()->setPosition({ "70%", "0%" });
+    btnPage[7].setColor(sf::Color::Blue, sf::Color::Green);
+    btnPage[7].setTextColor(sf::Color::White);
+    btnPage[7].setTextSize(21);
 
     inputPage[0].get()->setSize("50%", "10%"); // uname
     inputPage[0].setTextSize(18);
@@ -133,7 +150,7 @@ int main()
     inputPage[1].get()->setSize("50%", "10%"); // password
     inputPage[1].setTextSize(18);
     inputPage[1].get()->setPosition({ "25%", "40%" });
-    for(int i=0;i<6;i++)gui.add(btnPage[i].get());
+    for(int i=0;i<8;i++)gui.add(btnPage[i].get());
     gui.add(inputPage[0].get());
     gui.add(inputPage[1].get());
     //char* jon = (char*)malloc(sizeof(char) * 16);
@@ -166,13 +183,14 @@ int main()
 }
 void pickLang(int L) {
     Lang = L; 
-    RunGUI(gui, 1);
     btnPage[0].setText(languages[Lang][0]);
     btnPage[3].setText(languages[Lang][1]);
     btnPage[4].setText(languages[Lang][2]);
     btnPage[5].setText(languages[Lang][3]);
+    btnPage[6].setText(languages[Lang][6]);
     inputPage[0].get()->setDefaultText(languages[Lang][4]);
     inputPage[1].get()->setDefaultText(languages[Lang][5]);
+    RunGUI(gui, 1);
 }
 void goMain() { RunGUI(gui,0); }
 void whatLogin(int p) { if (p == 0) { RunGUI(gui, 3); } else { RunGUI(gui, 2); } }
@@ -192,7 +210,7 @@ void checkLogin() {
 }
 bool handleLogin(int which){
     uname = inputPage[0].get()->getText();
-    std::cout << "Logging in as: " << uname << "\n";
+    std::cout << "Logging in as: " << uname << ";" << which << "\n";
     if (uname != "") {
         if (which == 0) { // local/file
             RunGUI(gui, 4);
