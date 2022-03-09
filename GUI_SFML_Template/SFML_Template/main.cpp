@@ -16,7 +16,7 @@ Input inputPage[2]; // list of input areas to be allowed to be used
 int currentPage = -1; int Lang = 0;
 void pickLang(int L); void goMain(); void whatLogin(int p); void saver(); bool handleLogin(int which); void checkLogin();
 //For easy debugging, show if a file could not be opened in the console.
-bool RunGUI(tgui::GuiBase& gui, int p = 0)
+bool RunGUI(int p = 0)
 {
     try
     {
@@ -142,6 +142,7 @@ int main()
     btnPage[7].setColor(sf::Color::Blue, sf::Color::Green);
     btnPage[7].setTextColor(sf::Color::White);
     btnPage[7].setTextSize(21);
+    btnPage[7].get()->onPress(RunGUI, 6);
 
     btnPage[8].get()->setSize({ "15%", "10%" }); // Edit -button
     btnPage[8].get()->setPosition({ "70%", "0%" });
@@ -167,7 +168,7 @@ int main()
     //std::cout << fi.read();
     //std::FILE* fil = std::fopen("/tmp/jrecip.log","r");
 
-    RunGUI(gui);
+    RunGUI();
     window.setFramerateLimit(10);
     while (window.isOpen())
     {
@@ -197,10 +198,10 @@ void pickLang(int L) {
     btnPage[7].setText(languages[Lang][6]);
     inputPage[0].get()->setDefaultText(languages[Lang][4]);
     inputPage[1].get()->setDefaultText(languages[Lang][5]);
-    RunGUI(gui, 1);
+    RunGUI(1);
 }
-void goMain() { RunGUI(gui,0); }
-void whatLogin(int p) { if (p == 0) { RunGUI(gui, 3); } else { RunGUI(gui, 2); } }
+void goMain() { RunGUI(0); }
+void whatLogin(int p) { if (p == 0) { RunGUI(3); } else { RunGUI(2); } }
 void saver(){}
 void checkLogin() {
     uname = inputPage[0].get()->getText();
@@ -220,7 +221,7 @@ bool handleLogin(int which){
     std::cout << "Logging in as: " << uname << ";" << which << "\n";
     if (uname != "") {
         if (which == 0) { // local/file
-            RunGUI(gui, 4);
+            RunGUI(4);
             char fn[16] = { '/','t','m','p','/','j','r','e','c','i','p','e','.','l','o','g' };
             fs logfil(fn);
 
