@@ -75,24 +75,22 @@ void fs::write(char* data, char* filename)
 	errno_t err = 1;
 	err = fopen_s(&this->f,this->fn, "w");
 	if (err == 0) { // no error
-		fputs(data, this->f);
+		fputs(data, this->f); // write data to file
 		close();
 	}
 	else {
 
 	}
-	close();
 }
 void fs::append(char* data, char* filename)
 {
 	if (sizeof(filename) == 0)filename = this->fn;
 	errno_t err = 1;
 	err = fopen_s(&this->f,this->fn, "a");
-	if (err == 0) {
-		fputs(data, this->f);
+	if (err == 0) { // no err
+		fputs(data, this->f); // write data to file
 		close();
 	}
-	close();
 }
 
 void fs::close()
