@@ -1,4 +1,5 @@
 #include "fs.h"
+#pragma directive
 
 fs::fs(char* filename)
 {
