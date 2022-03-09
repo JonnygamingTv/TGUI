@@ -1,5 +1,4 @@
 #include<iostream>
-#include<string>
 #include <TGUI/TGUI.hpp>
 #include "Btn.h"
 #include "Input.h"
