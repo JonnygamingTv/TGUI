@@ -3,16 +3,17 @@
 #include "Btn.h"
 #include "Input.h"
 #include "fs.h"
-
+//2022
 //    __________________________________________
 //   /                      _ ___         __    \
 //  /     | /\ |\ | |_| /\ /_  |  | |\ | | _     \
 // /     _| \/ | \| | | \/ _/  |  | | \| \__|     \
 // -------------------------------------------------
 // Login system - Anton
+// Recipes / Receptsidan - Melker
 // Class and function mixing - Jonathan, Anton
-// Class dependency - Jonathan 
-// Receptsidan - Melker
+// Class dependencies (fs, Btn, Input, ...) - Jonathan 
+//
 
 sf::RenderWindow window{ {800, 600}, "JonHosting.com" };
 //A Gui Object that works with Sfml window. 
