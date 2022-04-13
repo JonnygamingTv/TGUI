@@ -4,18 +4,30 @@
 #include "Input.h"
 #include "fs.h"
 
+//    __________________________________________
+//   /                      _ ___         __    \
+//  /     | /\ |\ | |_| /\ /_  |  | |\ | | _     \
+// /     _| \/ | \| | | \/ _/  |  | | \| \__|     \
+// -------------------------------------------------
+// Login system - Anton
+// Class and function mixing - Jonathan, Anton
+// Class dependency - Jonathan 
+// Receptsidan - Melker
 
 sf::RenderWindow window{ {800, 600}, "JonHosting.com" };
 //A Gui Object that works with Sfml window. 
 tgui::GuiSFML gui{ window };
 tgui::String languages[2][12] = { {"Back","Local","Cloud","Login","Username","Password","Create New","Edit"},{"Tillbaks","Lokal","Online","Logga in","Namn","Nyckel","Skapa Ny","Redigera"}};
 tgui::String uname; // username identifier
+std::string AppDir = "%appdata%/RecipeStacker/users/"; // more professional to save in appdata instead of local saving
 
 Btn btnPage[9];// list of buttons to be used
 Input inputPage[2]; // list of input areas to be allowed to be used
-int currentPage = -1; int Lang = 0;
-void pickLang(int L); void goMain(); void whatLogin(int p); void saver(); bool handleLogin(int which); void checkLogin();
-//For easy debugging, show if a file could not be opened in the console.
+tgui::ScrollablePanel::Ptr ScrollList = tgui::ScrollablePanel::create(); // scrollable list for the list of 
+
+int currentPage = -1; // Set to main page
+int Lang = 0; // Set to default language
+void pickLang(int L); void goMain(); void whatLogin(int p); void saver(); bool handleLogin(int which); void checkLogin(); // Define functions so there are no problems with references
 bool RunGUI(int p = 0)
 {
     try
@@ -24,6 +36,7 @@ bool RunGUI(int p = 0)
             for (int i = 1; i < 9; i++) {
                 //gui.remove(btnPage[i].get());
                 //btnPage[i].destroy();
+                // Alternative method above ^
                 btnPage[i].get()->setVisible(false);
             }
             for (int i = 0; i < 2; i++) {
@@ -36,20 +49,22 @@ bool RunGUI(int p = 0)
 
 
             break;
-        case 5: // viewer
+        case 5: // viewer / preview
             btnPage[8].get()->setVisible(true);
+
 
             break;
         case 4: {// list page to pick one to edit
             btnPage[7].get()->setVisible(true);
-            window.setFramerateLimit(30);
+
+
+
+            window.setFramerateLimit(30); // högre bilduppdatering för en bättre upplevelse när man skriver
             break; }
         case 3: { // local login page
             btnPage[0].get()->setVisible(true);
             btnPage[5].get()->setVisible(true);
             
-
-            //std::ifstream psinput("password.txt");
             
             inputPage[0].get()->setVisible(true);
             break; }
@@ -66,17 +81,12 @@ bool RunGUI(int p = 0)
             for (int i = 3; i < 5; i++)btnPage[i].get()->setVisible(true);
             break;
         default: // language page
-            //Btn g;
-            window.setFramerateLimit(10);
+            window.setFramerateLimit(10); // låg bilduppdatering för att spara på GPUn när det ändå inte kommer märkas
             btnPage[0].get()->setVisible(false);
             for (int i = 1; i < 3; i++)btnPage[i].get()->setVisible(true);
             break;
         }
         currentPage = p;
-        //window.clear();
-        //gui.draw();
-        //window.display();
-        //MakeButton("Click Me", gui);
         return true;
     }
     catch (const tgui::Exception& e)
@@ -85,8 +95,6 @@ bool RunGUI(int p = 0)
         return false;
     }
 }
-
-//std::FILE* fopen(const char* filename, const char* mode);
 
 
 //main entry
@@ -107,20 +115,20 @@ int main()
     btnPage[1].get()->onClick(pickLang, 1);
     btnPage[1].setTextSize(21);
 
-    btnPage[2].setColor(sf::Color::Red, sf::Color::Green); // Engelska
+    btnPage[2].setColor(sf::Color::Red, sf::Color::Green); // Engelska / English
     btnPage[2].setText("English");
     btnPage[2].get()->setSize({ "50%", "16.67%" });
     btnPage[2].get()->setPosition({ "50%", "16.67%" });
     btnPage[2].get()->onClick(pickLang, 0);
     btnPage[2].setTextSize(21);
 
-    btnPage[3].setColor(sf::Color::Red, sf::Color::Green); // local login
+    btnPage[3].setColor(sf::Color::Red, sf::Color::Green); // local login button
     btnPage[3].setTextSize(21);
     btnPage[3].get()->setSize({ "50%", "16.67%" });
     btnPage[3].get()->setPosition({ "25%","16.67%" });
     btnPage[3].get()->onPress(whatLogin, 0);
 
-    btnPage[4].setColor(sf::Color::Red, sf::Color::Green); // cloud login
+    btnPage[4].setColor(sf::Color::Red, sf::Color::Green); // cloud login button
     btnPage[4].setTextSize(21);
     btnPage[4].get()->setSize({ "50%", "16.67%" });
     btnPage[4].get()->setPosition({ "25%","60%" });
@@ -157,19 +165,23 @@ int main()
     inputPage[1].get()->setSize("50%", "10%"); // password
     inputPage[1].setTextSize(18);
     inputPage[1].get()->setPosition({ "25%", "40%" });
-    for(int i=0;i<9;i++)gui.add(btnPage[i].get());
-    gui.add(inputPage[0].get());
-    gui.add(inputPage[1].get());
-    //char* jon = (char*)malloc(sizeof(char) * 16);
-    //jon = "/tmp/jrecip.log";
-    //char fn[16] = { '/','t','m','p','/','j','r','e','c','i','p','e','.','l','o','g' };
-    //fs fi(fn);
-    //fi.read(fn); // trasig, kommentera (//) i början av den här raden för att ta bort den tillfälligt.
-    //std::cout << fi.read();
-    //std::FILE* fil = std::fopen("/tmp/jrecip.log","r");
 
+    // add objects to the GUI
+    for(int i=0;i<9;i++)gui.add(btnPage[i].get());
+    gui.add(inputPage[0].get());//    _____________________________
+    gui.add(inputPage[1].get());//   /                             \
+    //                              /       | /\  |\ |    . . .     \
+    // create directories for data /       _| \/  | \|     ,         \
+    //                             -----------------------------------
+    fs fi;
+    bool ex = fi.exists("%appdata%/RecipeStacker");
+    if(!ex) {
+        fi.mkdir("%appdata%/RecipeStacker");
+        fi.mkdir("%appdata%/RecipeStacker/users");
+    }
+    
     RunGUI();
-    window.setFramerateLimit(10);
+    window.setFramerateLimit(10); // low framerate for less GPU usage
     while (window.isOpen())
     {
         sf::Event event;
@@ -188,7 +200,7 @@ int main()
 
 
 }
-void pickLang(int L) {
+void pickLang(int L) { // Efter man väljer språk så ska knapparna och de andra objekten med text uppdateras till det språket.
     Lang = L; 
     btnPage[0].setText(languages[Lang][0]);
     btnPage[3].setText(languages[Lang][1]);
@@ -198,37 +210,50 @@ void pickLang(int L) {
     btnPage[7].setText(languages[Lang][6]);
     inputPage[0].get()->setDefaultText(languages[Lang][4]);
     inputPage[1].get()->setDefaultText(languages[Lang][5]);
-    RunGUI(1);
+    RunGUI(1); // Gå vidare
 }
-void goMain() { RunGUI(0); }
-void whatLogin(int p) { if (p == 0) { RunGUI(3); } else { RunGUI(2); } }
-void saver(){}
-void checkLogin() {
+void goMain() { RunGUI(0); } //Man går till första sidan
+void whatLogin(int p) { // Lokalt eller Online?
+    if (p == 0) { // Lokalt
+        RunGUI(3);
+    }
+    else { // Annars är det Online / Cloud
+        RunGUI(2);
+    }
+}
+void saver(){ //Funktionen för att spara eller nåt sånt
+
+} 
+void checkLogin() { // Kolla om användaren finns och sätt färg på knappen baserat på det.
     uname = inputPage[0].get()->getText();
-    std::string nam = uname.toStdString() + ".txt";
+    std::string nam = uname.toStdString();
     const char* name = nam.c_str();
     fs logfil;
     bool psinput = logfil.exists(name);
-    if (psinput) {
+    if (psinput) { 
         btnPage[5].get()->getRenderer()->setBackgroundColorHover({ 0, 0, 255, 175 });
     }
     else {
         btnPage[5].get()->getRenderer()->setBackgroundColorHover({ 255, 0, 0, 175 });
-    }
+    } 
 }
-bool handleLogin(int which){
+bool handleLogin(int which){ // sparar namnet i en global variabel, kollar vilken typ av inlogg det är, verifierar och skickar sedan sidare
     uname = inputPage[0].get()->getText();
     std::cout << "Logging in as: " << uname << ";" << which << "\n";
     if (uname != "") {
-        if (which == 0) { // local/file
+        if (which == 0) { // local/file action
             RunGUI(4);
-            char fn[16] = { '/','t','m','p','/','j','r','e','c','i','p','e','.','l','o','g' };
-            fs logfil(fn);
+            fs loginUser;
+            std::string path = AppDir + uname.toStdString(); 
+            bool ex = loginUser.exists(path.c_str());
+            if (!ex) {
+                loginUser.mkdir(path.c_str());
+            }
 
             return true;
         }
-        else { // online/cloud
-            tgui::String pass = inputPage[1].get()->getText();
+        else { // online/cloud action
+            tgui::String pass = inputPage[1].get()->getText(); // variable for the password
 
 
         }

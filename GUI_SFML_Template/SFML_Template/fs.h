@@ -9,6 +9,7 @@ public:
 	bool exists(char* filename = {});
 	bool exists(const char* filename = {});
 	void mkdir(char* filename = {});
+	void mkdir(const char* filename = {});
 	void write(char* data,char* filename = {});
 	void write(const char* data, char* filename = {});
 	void append(char* data,char* filename = {});

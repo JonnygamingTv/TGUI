@@ -3,12 +3,8 @@
 class ListRecipe
 {
 public:
-	void setText(char* txt) {
-		this->button->setText(txt);
-	}
-	void setImage(tgui::Texture &texture){
-		img->setImage(texture);
-	}
+	void setText(char* txt);
+	void setImage(tgui::Texture& texture);
 private:
 	tgui::BitmapButton::Ptr img = tgui::BitmapButton::create();
 	tgui::Button::Ptr button = tgui::Button::create();
