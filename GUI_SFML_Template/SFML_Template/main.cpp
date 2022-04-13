@@ -43,7 +43,9 @@ bool RunGUI(int p = 0)
             for (int i = 0; i < 2; i++) {
                 inputPage[i].get()->setVisible(false);
             }
+#if DEBUG
             std::cout << "P: " << p << "\n";
+#endif
         }
         switch (p) {
         case 6: // editor
@@ -238,9 +240,11 @@ void checkLogin() { // Kolla om användaren finns och sätt färg på knappen basera
         btnPage[5].get()->getRenderer()->setBackgroundColorHover({ 255, 0, 0, 175 });
     } 
 }
-bool handleLogin(int which){ // sparar namnet i en global variabel, kollar vilken typ av inlogg det är, verifierar och skickar sedan sidare
+bool handleLogin(int which){ // sparar namnet i en global variabel, kollar vilken typ av inlogg det är, verifierar och skickar sedan vidare
     uname = inputPage[0].get()->getText();
+#if DEBUG
     std::cout << "Logging in as: " << uname << ";" << which << "\n";
+#endif
     if (uname != "") {
         if (which == 0) { // local/file action
             RunGUI(4);
